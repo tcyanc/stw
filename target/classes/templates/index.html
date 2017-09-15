@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"> </meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=no" /> </meta>
+        <style>
+            .result_p{
+                font-size:14px;
+                padding-bottom:10px
+            }
+            .strong{
+                font-weight:bold;
+                font-size:14px;
+                }
+            .result_p span{
+                padding-right:1px;
+            }
+            .left_area{
+                width:130px;
+
+                display:inline-block;
+                text-align:right;
+                }
+        </style>
+        <title>施坦威油品对应查询</title>
+        <link rel="stylesheet" th:href="@{/layui/css/layui.css}"> </link>
+        <script th:src="@{/layui/layui.js}"></script>
+        <script th:src="@{/js/jquery.js}"></script>
+    </head>
+    <body>
+    <form class="layui-form" action="/" id="form1">
+      <div class="layui-form-item" style="margin-top:20px; margin-left:-40px">
+        <label class="layui-form-label">品牌</label>
+        <div class="layui-input-block">
+          <select name="pinpai" lay-filter="pinpai" id="pinpai">
+            <option value="">请选择品牌</option>
+                      <option th:value="${pinpai.pinpai}" th:text="${pinpai.pinpai}" th:each="pinpai:${list}"></option>
+                      <option value=""></option>
+           </select>
+        </div>
+      </div>
+
+      <div class="layui-form-item" style="margin-left:-40px">
+        <label class="layui-form-label">车系</label>
+        <div class="layui-input-block">
+          <select name="chexi" lay-filter="chexi" id="chexi">
+           <option value="">请选择车系</option>
+
+          </select>
+        </div>
+      </div>
+       <div class="layui-form-item" style="margin-left:-40px">
+        <label class="layui-form-label">年款</label>
+        <div class="layui-input-block">
+          <select name="niankuan" lay-filter="niankuan" id="niankuan" >
+        <option value="">请选择年款</option>
+
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+    </form>
+
+    <blockquote class="layui-elem-quote" style="margin:5px">
+        <p  class="result_p strong" id="content_keywords"><span id="t_pinpai"></span><span id="t_chexi"></span><span id="t_niankuan"></span></p>
+        <p  class="result_p"><span class="left_area">变&nbsp速&nbsp箱：</span><span id="biansuxiang"></span></p>
+        <p  class="result_p"><span class="left_area">施坦威油品型号：</span><span id="ruihuayou"></span></p>
+        <p  class="result_p"><span class="left_area">施坦威推荐换油量：</span><span id="huanyouliang"></span></p>
+        <p  class="result_p"><span class="left_area">原厂初装用量：</span><span id="chuzhuangliang"></span></p>
+        <p  class="result_p"><span class="left_area">重力更换推荐量：</span><span id="tuijianliang"></span></p>
+
+    </blockquote>
+
+    </body>
+
+    <script>
+        layui.use('form', function() {
+            var form = layui.form;
+            $ = layui.jquery;
+            form.on('select(pinpai)', function(data){
+                //alert(data.value);
+                $.getJSON("custom/getChexi","",function(json){
+                    var option="";
+                    $.each(json,function(i,n){
+                        option+="<option value='"+n.chexi+"'>"+n.chexi+"</option>";
+                    });
+                    $("#chexi").empty();
+                    $("#chexi").append("<option value='' selected>请选择车系</option>");
+                    $("#chexi").append(option);
+                    form.render();
+                });
+            });
+            form.on('switch(pinpai)', function(data) {
+                alert(data.value);
+            });
+            //处理选择品牌，加载年款数据
+            form.on('select(chexi)', function(data){
+                //alert(data.value);
+                $.getJSON("getNiankuan.php?niankuan="+data.value,"",function(json){
+                    var option="";
+                    $.each(json,function(i,n){
+                        option+="<option value='"+n.niankuan+"'>"+n.niankuan+"</option>";
+                    });
+                    $("#niankuan").empty();
+                    $("#niankuan").append("<option value='' selected>请选择年款</option>");
+                    $("#niankuan").append(option);
+                    form.render();
+                });
+            });
+        });
+
+        $(function(){
+            $("form").submit( function () {
+                var niankuan=$("#niankuan").val();
+                var pinpai=$("#pinpai").val();
+                var chexi=$("#chexi").val();
+                var data={chexi:chexi,niankuan:niankuan,pinpai:pinpai};
+
+                if (niankuan==""){
+                    alert("年款必选！");
+                    return false;
+                }else if (pinpai==""){
+                    alert("品牌必选！");
+                    return false;
+                }else if (chexi==""){
+                    alert("车系必选！");
+                    return false;
+                }
+
+                $("#t_chexi").html(chexi);
+                $("#t_niankuan").html(niankuan);
+                $("#t_pinpai").html(pinpai);
+                $.getJSON("queryData.php",data,function(json){
+                    if (json==false){
+                            alert("没有符合条件数据！");
+                    }else{
+                        $("#biansuxiang").html(json.biansuxiang);
+                        $("#ruihuayou").html(json.ruihuayou);
+                        $("#huanyouliang").html(json.huanyouliang);
+                        $("#chuzhuangliang").html(json.chuzhuangliang);
+                        $("#tuijianliang").html(json.tuijianliang);
+                    }
+                });
+                return false;
+            } );
+        });
+
+    </script>
+
+</html>
