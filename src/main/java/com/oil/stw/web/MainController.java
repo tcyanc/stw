@@ -1,11 +1,10 @@
-package com.rhy.stw.web;
+package com.oil.stw.web;
 
 /**
  * Created by yan_t on 2017-09-12.
  */
 
-import com.rhy.stw.bean.CheXi;
-import com.rhy.stw.bean.PinPai;
+import com.oil.stw.bean.PinPai;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +17,7 @@ public class MainController{
 
     @RequestMapping("/")
     public String toIndex(Model model) {
-        List<PinPai> list = new ArrayList<>();
+        List<PinPai> list = new ArrayList();
         list.add(new PinPai("奥迪"));
         list.add(new PinPai("标致"));
         list.add(new PinPai("比亚迪"));

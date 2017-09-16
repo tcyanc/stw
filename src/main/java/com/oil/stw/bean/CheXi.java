@@ -1,4 +1,4 @@
-package com.rhy.stw.bean;
+package com.oil.stw.bean;
 
 import java.io.Serializable;
 

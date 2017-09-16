@@ -1,7 +1,6 @@
-package com.rhy.stw.web;
+package com.oil.stw.web;
 
-import com.rhy.stw.bean.CheXi;
-import org.springframework.ui.Model;
+import com.oil.stw.bean.CheXi;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +16,7 @@ public class CustomController {
     @RequestMapping("/getChexi")
     public List getChexi() {
 
-        List<CheXi> list = new ArrayList<>();
+        List<CheXi> list = new ArrayList();
         list.add(new CheXi("123"));
         list.add(new CheXi("456"));
 //        model.addAttribute("chexi", list);

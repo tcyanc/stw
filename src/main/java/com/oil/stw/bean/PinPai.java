@@ -1,4 +1,4 @@
-package com.rhy.stw.bean;
+package com.oil.stw.bean;
 
 /**
  * Created by yan_t on 2017-09-12.

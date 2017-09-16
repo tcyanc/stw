@@ -1,7 +1,4 @@
-package com.rhy.stw;
-
-import com.rhy.stw.bean.PinPai;
-import org.springframework.boot.SpringApplication;
+package com.oil.stw;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -23,14 +20,14 @@ public class Spider {
 //    http://sdsem20170114.ushost2.08jt.com/page/getNiankuan.php?niankuan=奥迪A6L
 //    http://sdsem20170114.ushost2.08jt.com/page/queryData.php?chexi=奥迪A6L&niankuan=2005款+2.0T+自动标准型&pinpai=奥迪
 
-    public static void main(String[] args) {
-        Connect();
-    }
+//    public static void main(String[] args) {
+//        Connect();
+//    }
 
     public static void Connect(){
 
         // 品牌列表
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList();
         list.add("奥迪");
         list.add("标致");
         list.add("比亚迪");
@@ -117,10 +114,10 @@ public class Spider {
         list.add("阿斯顿马丁");
 
         // 车系map
-        Map<String,List<String>> chexiMap = new HashMap<>();
+        Map<String,List<String>> chexiMap = new HashMap();
 
         // 年款map
-        Map<String,List<String>> niankuanMap = new HashMap<>();
+        Map<String,List<String>> niankuanMap = new HashMap();
 
 
         HttpURLConnection conn = null;
